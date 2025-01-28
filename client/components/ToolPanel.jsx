@@ -76,8 +76,19 @@ export default function ToolPanel({
 
     const firstEvent = events[events.length - 1];
     if (!functionAdded && firstEvent.type === "session.created") {
+      // First, send the session update for tools
       sendClientEvent(sessionUpdate);
       setFunctionAdded(true);
+      
+      // Then, send the activation word instruction
+      setTimeout(() => {
+        sendClientEvent({
+          type: "response.create",
+          response: {
+            instructions: "you have an activation word which is 'bobby'. do not say anything ever unless your name is said first"
+          },
+        });
+      }, 500);
     }
 
     const mostRecentEvent = events[0];
